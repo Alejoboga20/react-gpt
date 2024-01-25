@@ -6,3 +6,4 @@ export * from './chat-bubbles/MyMessage.tsx';
 export * from './loaders/TypingLoader.tsx';
 
 export * from './chat-input-boxes/TextMessageBox.tsx';
+export * from './chat-input-boxes/TextMessageBoxFile.tsx';
