@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { GptMessage, MyMessage, TextMessageBox, TextMessageBoxFile } from '../../components';
 import { TypingLoader } from '../../components/loaders/TypingLoader';
+import { TextMessageBoxSelect } from '../../components/chat-input-boxes/TextMessageBoxSelect';
 
 type Message = {
 	text: string;
@@ -43,7 +44,7 @@ export const OrthographyPage = () => {
 				</div>
 			</div>
 
-			<TextMessageBox
+			{/* <TextMessageBox
 				onSendMessage={handlePost}
 				placeholder='type your message here'
 				disabledCorrections
@@ -51,6 +52,21 @@ export const OrthographyPage = () => {
 			<TextMessageBoxFile
 				onSendMessage={handlePost}
 				placeholder='type your message here'
+				disabledCorrections
+			/> */}
+			<TextMessageBoxSelect
+				onSendMessage={handlePost}
+				placeholder='type your message here'
+				options={[
+					{
+						id: '1',
+						text: 'Option 1',
+					},
+					{
+						id: '2',
+						text: 'Option 2',
+					},
+				]}
 				disabledCorrections
 			/>
 		</div>
