@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { GptMessage, MyMessage, TextMessageBox } from '../../components';
-import { TypingLoader } from '../../components/loaders/TypingLoader';
+import { GptMessage, MyMessage, TypingLoader, TextMessageBox } from '../components';
 
 type Message = {
 	text: string;
 	isGptMessage: boolean;
 };
 
-export const OrthographyPage = () => {
+export const ChatTemplate = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [messages, setMessages] = useState<Message[]>([]);
 

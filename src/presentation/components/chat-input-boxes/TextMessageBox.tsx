@@ -36,8 +36,8 @@ export const TextMessageBox = ({
 						value={message}
 						onChange={(e) => setMessage(e.target.value)}
 						placeholder={placeholder}
-						autoComplete={disabledCorrections ? 'on' : 'off'}
-						autoCorrect={disabledCorrections ? 'on' : 'off'}
+						autoComplete={disabledCorrections ? 'off' : 'on'}
+						autoCorrect={disabledCorrections ? 'off' : 'on'}
 						spellCheck={!disabledCorrections}
 						className='flex w-full border rounded-xl text-gray-800 focus:outline-none focus:border-indigo-300 pl-4 h-10'
 					/>
