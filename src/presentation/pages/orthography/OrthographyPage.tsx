@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { GptMessage, MyMessage, TextMessageBox, TextMessageBoxFile } from '../../components';
 import { TypingLoader } from '../../components/loaders/TypingLoader';
 import { TextMessageBoxSelect } from '../../components/chat-input-boxes/TextMessageBoxSelect';
+import { orthographyUseCase } from '../../../core/use-cases/orthography.use-case';
 
 type Message = {
 	text: string;
@@ -16,7 +17,8 @@ export const OrthographyPage = () => {
 		setIsLoading(true);
 		setMessages((prevMessages) => [...prevMessages, { text, isGptMessage: false }]);
 
-		/* TODO: call use case */
+		const data = await orthographyUseCase(text);
+		console.log({ data });
 		setIsLoading(false);
 
 		/* TODO: add gpt message with isGptMessage: true */
@@ -44,17 +46,18 @@ export const OrthographyPage = () => {
 				</div>
 			</div>
 
-			{/* <TextMessageBox
+			<TextMessageBox
 				onSendMessage={handlePost}
 				placeholder='type your message here'
 				disabledCorrections
 			/>
+			{/* 
 			<TextMessageBoxFile
 				onSendMessage={handlePost}
 				placeholder='type your message here'
 				disabledCorrections
 			/> */}
-			<TextMessageBoxSelect
+			{/* <TextMessageBoxSelect
 				onSendMessage={handlePost}
 				placeholder='type your message here'
 				options={[
@@ -68,7 +71,7 @@ export const OrthographyPage = () => {
 					},
 				]}
 				disabledCorrections
-			/>
+			/> */}
 		</div>
 	);
 };
