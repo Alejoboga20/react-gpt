@@ -1,12 +1,17 @@
 import { useState } from 'react';
-import { GptMessage, MyMessage, TextMessageBox, TextMessageBoxFile } from '../../components';
+import { GptMessage, MyMessage, TextMessageBox } from '../../components';
 import { TypingLoader } from '../../components/loaders/TypingLoader';
-import { TextMessageBoxSelect } from '../../components/chat-input-boxes/TextMessageBoxSelect';
 import { orthographyUseCase } from '../../../core/use-cases/orthography.use-case';
+import { GptOrthographyMessage } from '../../components/chat-bubbles/GptOrthographyMessage';
 
 type Message = {
 	text: string;
 	isGptMessage: boolean;
+	info?: {
+		userScore: number;
+		errors?: string[];
+		message: string;
+	};
 };
 
 export const OrthographyPage = () => {
@@ -17,8 +22,29 @@ export const OrthographyPage = () => {
 		setIsLoading(true);
 		setMessages((prevMessages) => [...prevMessages, { text, isGptMessage: false }]);
 
-		const data = await orthographyUseCase(text);
-		console.log({ data });
+		const { ok, errors, message, userScore } = await orthographyUseCase(text);
+
+		console.log({ ok, errors, message, userScore });
+		if (!ok) {
+			setMessages((prevMessages) => [
+				...prevMessages,
+				{ text: 'An error has ocurred', isGptMessage: true },
+			]);
+		} else {
+			setMessages((prevMessages) => [
+				...prevMessages,
+				{
+					text: message!,
+					isGptMessage: true,
+					info: {
+						errors: errors,
+						message: message!,
+						userScore: userScore!,
+					},
+				},
+			]);
+		}
+
 		setIsLoading(false);
 
 		/* TODO: add gpt message with isGptMessage: true */
@@ -32,7 +58,12 @@ export const OrthographyPage = () => {
 
 					{messages.map((message, index) =>
 						message.isGptMessage ? (
-							<GptMessage key={index} text={message.text} />
+							<GptOrthographyMessage
+								key={index}
+								message={message.text}
+								errors={message.info!.errors || []}
+								userScore={message.info!.userScore || 0}
+							/>
 						) : (
 							<MyMessage key={index} text={message.text} />
 						)
@@ -51,27 +82,6 @@ export const OrthographyPage = () => {
 				placeholder='type your message here'
 				disabledCorrections
 			/>
-			{/* 
-			<TextMessageBoxFile
-				onSendMessage={handlePost}
-				placeholder='type your message here'
-				disabledCorrections
-			/> */}
-			{/* <TextMessageBoxSelect
-				onSendMessage={handlePost}
-				placeholder='type your message here'
-				options={[
-					{
-						id: '1',
-						text: 'Option 1',
-					},
-					{
-						id: '2',
-						text: 'Option 2',
-					},
-				]}
-				disabledCorrections
-			/> */}
 		</div>
 	);
 };
